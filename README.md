@@ -72,6 +72,6 @@ npm install
 
 ## Індивідуальне завдання
 
-Варіант: **№ ___**
-Модуль: `src/___.ts`
-Тести: `tests/___.test.ts`
+Варіант: **№ 3**
+Модуль: `src/time-format.ts`
+Тести: `tests/time-format.test.ts`
