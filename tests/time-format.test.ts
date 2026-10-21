@@ -29,4 +29,8 @@ describe('secondsToTimeString', () => {
   it('відхиляє від’ємну кількість секунд', () => {
     expect(() => secondsToTimeString(-1)).toThrow('INVALID_SECONDS');
   });
+
+  it('строка', () => {
+    expect(() => secondsToTimeString("33")).toThrow('INVALID_SECONDS');
+  });
 });
