@@ -1,5 +1,6 @@
 const GRACE_DAYS = 3;
 const DAILY_RATE = 0.001;
+const MAX_RATE = 0.5;
 
 export function calcPenalty(debt: number, overdueDays: number): number {
   if (!Number.isInteger(overdueDays) || overdueDays < 0) {
@@ -9,5 +10,7 @@ export function calcPenalty(debt: number, overdueDays: number): number {
     throw new Error('INVALID_DEBT');
   }
   if (overdueDays <= GRACE_DAYS) return 0;
-  return debt * DAILY_RATE * (overdueDays - GRACE_DAYS);
+
+  const penalty = debt * DAILY_RATE * (overdueDays - GRACE_DAYS);
+  return Math.min(penalty, debt * MAX_RATE);
 }
