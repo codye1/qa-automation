@@ -17,3 +17,12 @@ it.each([
 ])('борг $debt, $days дн. → $expected', ({ debt, days, expected }) => {
   expect(calcPenalty(debt, days)).toBeCloseTo(expected, 2);
 });
+
+it.each([
+  { debt: 1000, days: 5,   expected: 2 },
+  { debt: 1000, days: 13,  expected: 10 },
+  { debt: 1000, days: 103, expected: 100 },
+  { debt: 2000, days: 13,  expected: 20 },
+])('борг $debt, $days дн. → $expected', ({ debt, days, expected }) => {
+  expect(calcPenalty(debt, days)).toBeCloseTo(expected, 2);
+});
