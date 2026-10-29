@@ -26,3 +26,13 @@ it.each([
 ])('борг $debt, $days дн. → $expected', ({ debt, days, expected }) => {
   expect(calcPenalty(debt, days)).toBeCloseTo(expected, 2);
 });
+
+it.each([
+  { debt: 1000, days: 502,  expected: 499 },
+  { debt: 1000, days: 503,  expected: 500 },
+  { debt: 1000, days: 504,  expected: 500 },
+  { debt: 1000, days: 1000, expected: 500 },
+  { debt: 2000, days: 1000, expected: 1000 },
+])('максимум 50%: борг $debt, $days дн. → $expected', ({ debt, days, expected }) => {
+  expect(calcPenalty(debt, days)).toBeCloseTo(expected, 2);
+});
