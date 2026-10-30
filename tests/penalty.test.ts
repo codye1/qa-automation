@@ -1,0 +1,49 @@
+import { it, expect } from 'vitest';
+import { calcPenalty } from '../src/penalty';
+
+it.each([-1, -30, 2.5, NaN])('відхиляє дні %s', (days) => {
+  expect(() => calcPenalty(1000, days)).toThrow('INVALID_DAYS');
+});
+
+it.each([0, -100, NaN, Infinity])('відхиляє борг %s', (debt) => {
+  expect(() => calcPenalty(debt, 5)).toThrow('INVALID_DEBT');
+});
+
+it.each([
+  { debt: 1000, days: 0,  expected: 0 },
+  { debt: 1000, days: 3,  expected: 0 },
+  { debt: 1000, days: 4,  expected: 1 },
+  { debt: 2000, days: 4,  expected: 2 },
+])('борг $debt, $days дн. → $expected', ({ debt, days, expected }) => {
+  expect(calcPenalty(debt, days)).toBeCloseTo(expected, 2);
+});
+
+it.each([
+  { debt: 1000, days: 5,   expected: 2 },
+  { debt: 1000, days: 13,  expected: 10 },
+  { debt: 1000, days: 103, expected: 100 },
+  { debt: 2000, days: 13,  expected: 20 },
+])('борг $debt, $days дн. → $expected', ({ debt, days, expected }) => {
+  expect(calcPenalty(debt, days)).toBeCloseTo(expected, 2);
+});
+
+it.each([
+  { debt: 1000, days: 502,  expected: 499 },
+  { debt: 1000, days: 503,  expected: 500 },
+  { debt: 1000, days: 504,  expected: 500 },
+  { debt: 1000, days: 1000, expected: 500 },
+  { debt: 2000, days: 1000, expected: 1000 },
+])('максимум 50%: борг $debt, $days дн. → $expected', ({ debt, days, expected }) => {
+  expect(calcPenalty(debt, days)).toBeCloseTo(expected, 2);
+});
+
+
+it.each([
+  { debt: 1234.56, days: 4,  expected: 1.23 },
+  { debt: 1234.56, days: 5,  expected: 2.47 },
+  { debt: 1234.56, days: 10, expected: 8.64 },
+  { debt: 1999.99, days: 4,  expected: 2 },
+  { debt: 0.01,    days: 4,  expected: 0 },
+])('округлення: борг $debt, $days дн. → $expected', ({ debt, days, expected }) => {
+  expect(calcPenalty(debt, days)).toBe(expected);
+});
